@@ -90,7 +90,7 @@ def fitness(individual):
     t_value = sum(individual[i] * prices[i] for i in range(len(prices)))
     return t_weight, t_value
 
-def print_generation(new_generation):
+def print_generation(new_generation, cpoblacion = cpoblacion):
     # to print the generation
     for i in range(cpoblacion):
         w, v = fitness(new_generation[i])
@@ -212,8 +212,11 @@ def create_next_generation(new_generation):
             Son1, Son2 = muta(Son1, Son2)
             #print("Sons:", Son1, Son2)
             # now ge add this 2 new individuals into the new gen
-            next_generation.append(Son1)
-            next_generation.append(Son2)
+            ####################################################
+            # we now have to run a mini tournament (both parents and both sons) to get the best 2 individuals
+            Best1, Best2 = mini_tournament(Father1, Father2, Son1, Son2)
+            next_generation.append(Best1)
+            next_generation.append(Best2)
             next_gen_p += 2
         else:
             # they go directly to the new generation of individuals
@@ -239,6 +242,21 @@ def find_best_i(new_generation):
 
     return best_i
 
+def mini_tournament(Father1, Father2, Son1, Son2):
+    players = [Father1, Father2, Son1, Son2]
+
+    fitness_list = []
+    for i in range(len(players)):
+        w, v = fitness(players[i])
+        fitness_list.append((players[i],v))
+    #print(fitness_list)
+
+    fitness_list.sort(key=lambda x: x[1], reverse=True)
+
+    Best1 = fitness_list[0][0]
+    Best2 = fitness_list[1][0]
+
+    return Best1, Best2
 
 print("\tInital generation")
 new_generation = create_generation()
@@ -257,3 +275,6 @@ while True:
     best_individuals.append(best_i)
     if generation_number >= max_generations:
         break
+
+print("\n\tBest Individuals")
+print_generation(best_individuals, len(best_individuals))
