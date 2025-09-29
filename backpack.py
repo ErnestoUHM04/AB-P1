@@ -57,8 +57,8 @@ u = 0.5
 #           Weight: 1 lb
 #           Price: $ 2
 
-weights = [4, 2, 5, 2, 1.5, 1]
-prices =  [10, 8, 12, 6, 3, 2]
+weights = [4, 2, 5, 5, 2, 1.5, 1]
+prices =  [10, 8, 12, 6, 3, 2, 2]
 best_individuals = []
 
 # Nuestros individuos serán cadenas Int de longitud 7
